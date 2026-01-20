@@ -11,6 +11,17 @@ RSpec.describe Product, type: :model do
     expect(product.errors[:image]).to be_present
   end
 
+  it "title must be at least 10 characters long" do
+    product = build(:product, title: "123456789")
+
+    expect(product).to be_invalid
+    expect(product.errors[:title]).to eq([ "way too short!" ])
+
+    product.title = "1234567890"
+
+    expect(product).to be_valid
+  end
+
   it "product price must be positive" do
     product = build(:product)
 

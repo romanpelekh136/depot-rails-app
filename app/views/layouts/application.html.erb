@@ -23,6 +23,11 @@
   </head>
 
   <body>
+    <header class="bg-green-700">
+      <%= image_tag 'logo.svg', alt: 'The Pragmatic Bookshelf' %>
+      
+      <h1><%= @page_title %></h1>
+    </header>
     <main class="container mx-auto mt-28 px-5 flex">
       <%= yield %>
     </main>
