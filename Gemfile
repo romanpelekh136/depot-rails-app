@@ -69,3 +69,5 @@ gem "hotwire-spark", "~> 0.1.13", group: :development
 gem "rspec-rails", "~> 8.0", groups: [:development, :test]
 
 gem "factory_bot_rails", "~> 6.5", groups: [:development, :test]
+
+gem "ruby-lsp-rspec", "~> 0.1.28", group: :"development test", require: false

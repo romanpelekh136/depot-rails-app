@@ -13,16 +13,17 @@ require 'rails_helper'
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe "/line_items", type: :request do
-  
   # This should return the minimal set of attributes required to create a valid
   # LineItem. As you add validations to LineItem, be sure to
   # adjust the attributes here as well.
+
+  let(:product) { create(:product) }
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    { product_id: product.id }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    { product_id: nil }
   }
 
   describe "GET /index" do
@@ -59,14 +60,15 @@ RSpec.describe "/line_items", type: :request do
   describe "POST /create" do
     context "with valid parameters" do
       it "creates a new LineItem" do
-        expect {
-          post line_items_url, params: { line_item: valid_attributes }
-        }.to change(LineItem, :count).by(1)
-      end
+        product = create(:product)
 
-      it "redirects to the created line_item" do
-        post line_items_url, params: { line_item: valid_attributes }
-        expect(response).to redirect_to(line_item_url(LineItem.last))
+        expect {
+          post line_items_url, params: { product_id: product.id }
+        }.to change(LineItem, :count).by(1)
+
+        follow_redirect!
+
+        expect(response.body).to include(product.title)
       end
     end
 
