@@ -13,17 +13,16 @@ require 'rails_helper'
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe "/carts", type: :request do
-  
   # This should return the minimal set of attributes required to create a valid
   # Cart. As you add validations to Cart, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
+  # let(:valid_attributes) {
+  #   skip("Add a hash of attributes valid for your model")
+  # }
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  # let(:invalid_attributes) {
+  #   skip("Add a hash of attributes invalid for your model")
+  # }
 
   describe "GET /index" do
     it "renders a successful response" do
@@ -116,16 +115,14 @@ RSpec.describe "/carts", type: :request do
 
   describe "DELETE /destroy" do
     it "destroys the requested cart" do
-      cart = Cart.create! valid_attributes
+      product = create(:product)
+      post line_items_path, params: { product_id: product.id }
+      cart = Cart.last
       expect {
         delete cart_url(cart)
       }.to change(Cart, :count).by(-1)
-    end
 
-    it "redirects to the carts list" do
-      cart = Cart.create! valid_attributes
-      delete cart_url(cart)
-      expect(response).to redirect_to(carts_url)
+      expect(response).to redirect_to(store_index_path)
     end
   end
 end
