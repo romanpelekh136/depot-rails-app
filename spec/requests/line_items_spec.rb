@@ -118,16 +118,12 @@ RSpec.describe "/line_items", type: :request do
 
   describe "DELETE /destroy" do
     it "destroys the requested line_item" do
-      line_item = LineItem.create! valid_attributes
+      line_item = create(:line_item)
       expect {
         delete line_item_url(line_item)
       }.to change(LineItem, :count).by(-1)
-    end
 
-    it "redirects to the line_items list" do
-      line_item = LineItem.create! valid_attributes
-      delete line_item_url(line_item)
-      expect(response).to redirect_to(line_items_url)
+      expect(response).to redirect_to(cart_path)
     end
   end
 end
