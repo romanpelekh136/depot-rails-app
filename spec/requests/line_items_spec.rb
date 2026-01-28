@@ -58,7 +58,7 @@ RSpec.describe "/line_items", type: :request do
   end
 
   describe "POST /create" do
-    context "with valid parameters" do
+    context "with standart html" do
       it "creates a new LineItem" do
         product = create(:product)
 
@@ -69,6 +69,22 @@ RSpec.describe "/line_items", type: :request do
         follow_redirect!
 
         expect(response.body).to include(product.title)
+      end
+    end
+
+    context "with turbo stream request" do
+      it "creates a new LineItem and updates sidebar without redirecting" do
+        product = create(:product)
+
+        expect {
+          post line_items_url, params: { product_id: product.id }, as: :turbo_stream
+        }.to change(LineItem, :count).by(1)
+
+        expect(response).to have_http_status(:success)
+
+        expect(response.media_type).to eq Mime[:turbo_stream]
+
+        expect(response.body).to include('class="line-item-highlight"')
       end
     end
 
