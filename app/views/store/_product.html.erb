@@ -1,9 +1,8 @@
 <%= turbo_frame_tag(dom_id(product)) do %>
-  
-  <li class='flex mb-6'>
+  <%# locals: (product:, highlight: false) %>
+  <li class='flex mb-6 <%= 'line-item-highlight' if highlight %> '>
     
-    <%= image_tag(product.image,
-          class: 'object-contain w-40 h-48 shadow mr-6') %>
+    <%= image_tag(product.image, class: 'object-contain w-40 h-48 shadow mr-6') %>
     
     <div>
       

@@ -5,7 +5,11 @@ class Product < ApplicationRecord
 
   before_destroy :ensure_not_referenced_by_any_line_item
 
-  after_commit -> { broadcast_refresh_later_to "products" }
+  after_commit -> {
+    broadcast_replace_later_to "store/products",
+      partial: "store/product",
+      locals: { product: self, highlight: true }
+  }
 
   validates :title, :description, :image, presence: true
 

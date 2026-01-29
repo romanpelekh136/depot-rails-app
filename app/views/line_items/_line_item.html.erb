@@ -3,12 +3,17 @@
 <% else %>
   <tr>
 <% end %>
-  <td class="text-right"><%= line_item.quantity %></td>
-  <td>&times;</td>
-  <td class="pr-2">
-    <%= line_item.product.title %>
-  </td>
-  <td class="text-right font-bold">
-    <%= number_to_currency(line_item.total_price) %>
-  </td>
+    <td>
+      <%= button_to "-", line_item, method: :patch,
+      class: 'h-4 w-6 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 font-bold flex items-center justify-center pb-1'
+      %>
+    </td>
+    <td class="text-right"><%= line_item.quantity %></td>
+    <td>&times;</td>
+    <td class="pr-2">
+      <%= line_item.product.title %>
+    </td>
+    <td class="text-right font-bold">
+      <%= number_to_currency(line_item.total_price) %>
+    </td>
 </tr>
