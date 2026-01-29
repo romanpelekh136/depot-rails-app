@@ -55,6 +55,7 @@ class CartsController < ApplicationController
     session[:cart_id] = nil
 
     respond_to do |format|
+      format.turbo_stream
       format.html { redirect_to store_index_path, notice: "Cart was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
