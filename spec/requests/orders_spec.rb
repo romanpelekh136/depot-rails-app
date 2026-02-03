@@ -17,7 +17,7 @@ RSpec.describe "/orders", type: :request do
   # Order. As you add validations to Order, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    { name: "Roman", address: "Lviv", email: "roman@test.com", pay_type: "Check" }
   }
 
   let(:invalid_attributes) {
@@ -72,6 +72,9 @@ RSpec.describe "/orders", type: :request do
 
   describe "POST /create" do
     context "with valid parameters" do
+      before do
+        post line_items_path, params: { product_id: product.id }
+      end
       it "creates a new Order" do
         expect {
           post orders_url, params: { order: valid_attributes }
@@ -80,7 +83,7 @@ RSpec.describe "/orders", type: :request do
 
       it "redirects to the created order" do
         post orders_url, params: { order: valid_attributes }
-        expect(response).to redirect_to(order_url(Order.last))
+        expect(response).to redirect_to(store_index_url)
       end
     end
 
