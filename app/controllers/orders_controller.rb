@@ -5,25 +5,20 @@ class OrdersController < ApplicationController
   before_action :set_cart, only: %i[create new]
   before_action :ensure_cart_isnt_empty, only: %i[new]
 
-  # GET /orders or /orders.json
   def index
     @orders = Order.all
   end
 
-  # GET /orders/1 or /orders/1.json
   def show
   end
 
-  # GET /orders/new
   def new
     @order = Order.new
   end
 
-  # GET /orders/1/edit
   def edit
   end
 
-  # POST /orders or /orders.json
   def create
     @order = Order.new(order_params)
     @order.add_line_items_from_cart(@cart)
@@ -32,7 +27,7 @@ class OrdersController < ApplicationController
       if @order.save
         Cart.destroy(session[:cart_id])
         session[:cart_id] = nil
-        OrderMailer.received(@order).deliver_later
+        ChargeOrderJob.perform_later(@order, pay_type_params.to_h)
         format.html { redirect_to store_index_url, notice: "Thank you for your order." }
         format.json { render :show, status: :created, location: @order }
       else
@@ -42,7 +37,6 @@ class OrdersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /orders/1 or /orders/1.json
   def update
     respond_to do |format|
       if @order.update(order_params)
@@ -55,7 +49,6 @@ class OrdersController < ApplicationController
     end
   end
 
-  # DELETE /orders/1 or /orders/1.json
   def destroy
     @order.destroy!
 
@@ -77,8 +70,19 @@ class OrdersController < ApplicationController
       end
     end
 
-    # Only allow a list of trusted parameters through.
     def order_params
       params.expect(order: [ :name, :address, :email, :pay_type ])
+    end
+
+    def pay_type_params
+      if order_params[:pay_type] == "Credit card"
+        params.require(:order).permit(:credit_card_number, :expiration_date)
+      elsif order_params[:pay_type] == "Check"
+        params.require(:order).permit(:routing_number, :account_number)
+      elsif order_params[:pay_type] == "Purchase order"
+        params.require(:order).permit(:po_number)
+      else
+      {}
+      end
     end
 end
