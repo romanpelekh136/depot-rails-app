@@ -1,4 +1,6 @@
 class OrdersController < ApplicationController
+  allow_unauthenticated_access only: %i[ new create ]
+
   include CurrentCart
 
   before_action :set_order, only: %i[ show edit update destroy ]

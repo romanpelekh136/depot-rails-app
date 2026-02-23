@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Store", type: :request do
+RSpec.describe "Stores", type: :request do
   let(:user) { create(:user, password: "password") }
 
   before do
