@@ -2,6 +2,11 @@ require 'rails_helper'
 
 RSpec.describe "/products", type: :request do
   describe "DELETE /destroy" do
+    let(:user) { create(:user, password: "password") }
+
+    before do
+      login_as(user)
+    end
     it "deletes a product that is empty" do
       product = create(:product)
 

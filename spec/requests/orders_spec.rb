@@ -13,9 +13,8 @@ require 'rails_helper'
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe "/orders", type: :request do
-  # This should return the minimal set of attributes required to create a valid
-  # Order. As you add validations to Order, be sure to
-  # adjust the attributes here as well.
+  let(:user) { create(:user, password: "password") }
+
   let(:valid_attributes) {
     { name: "Roman", address: "Lviv", email: "roman@test.com", pay_type: "Check" }
   }
@@ -25,6 +24,10 @@ RSpec.describe "/orders", type: :request do
   }
 
   let(:product) { create(:product) }
+
+  before do
+    login_as(user)
+  end
 
   describe "GET /index" do
     it "renders a successful response" do

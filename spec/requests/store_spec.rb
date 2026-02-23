@@ -1,6 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe "Stores", type: :request do
+RSpec.describe "Store", type: :request do
+  let(:user) { create(:user, password: "password") }
+
+  before do
+    login_as(user)
+  end
   describe "GET /index" do
     it "returns http success" do
       create(:product)

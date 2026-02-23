@@ -18,6 +18,7 @@ RSpec.describe "/line_items", type: :request do
   # adjust the attributes here as well.
 
   let(:product) { create(:product) }
+
   let(:valid_attributes) {
     { product_id: product.id }
   }
@@ -25,6 +26,12 @@ RSpec.describe "/line_items", type: :request do
   let(:invalid_attributes) {
     { product_id: nil }
   }
+
+  let(:user) { create(:user, password: "password") }
+
+  before do
+    login_as(user)
+  end
 
   describe "GET /index" do
     it "renders a successful response" do

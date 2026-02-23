@@ -34,6 +34,17 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+
+module AuthenticationHelpers
+  def login_as(user, password: "password")
+    post session_path, params: {
+      email_address: user.email_address,
+      password: password
+    }
+  end
+end
+
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
@@ -70,4 +81,7 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
   config.include FactoryBot::Syntax::Methods
+
+  config.include AuthenticationHelpers, type: :request
+  config.include AuthenticationHelpers, type: :system
 end
