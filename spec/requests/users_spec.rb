@@ -17,12 +17,18 @@ RSpec.describe "/users", type: :request do
   # User. As you add validations to User, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    { name: "Dave Thomas", email_address: "dave@example.com",
+    password: "password", password_confirmation: "password" }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    { name: "", email_address: "", password: "" }
   }
+
+  before do
+    admin = create(:user)
+    login_as(admin)
+  end
 
   describe "GET /index" do
     it "renders a successful response" do
@@ -65,7 +71,7 @@ RSpec.describe "/users", type: :request do
 
       it "redirects to the created user" do
         post users_url, params: { user: valid_attributes }
-        expect(response).to redirect_to(user_url(User.last))
+        expect(response).to redirect_to(users_url)
       end
     end
 
@@ -86,21 +92,22 @@ RSpec.describe "/users", type: :request do
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        { name: "Updated Name", email_address: "updated@example.com" }
       }
 
       it "updates the requested user" do
         user = User.create! valid_attributes
         patch user_url(user), params: { user: new_attributes }
         user.reload
-        skip("Add assertions for updated state")
+        expect(user.name).to eq("Updated Name")
+        expect(user.email_address).to eq("updated@example.com")
       end
 
       it "redirects to the user" do
         user = User.create! valid_attributes
         patch user_url(user), params: { user: new_attributes }
         user.reload
-        expect(response).to redirect_to(user_url(user))
+        expect(response).to redirect_to(users_url)
       end
     end
 
