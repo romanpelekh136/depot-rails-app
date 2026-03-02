@@ -32,7 +32,7 @@ Depot is an e-commerce application being built as I follow along with the book. 
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/romanpelekh136/depot-rails-app.git
    cd depot-rails-app
    ```
 
